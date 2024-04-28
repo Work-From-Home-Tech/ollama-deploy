@@ -14,6 +14,7 @@ link: - https://www.youtube.com/watch?v=m3d1rz0Nepk
 
 TODOS:
 - [ ] Creation of cloud VMs on Azure and Digital ocean via a playbook
+- [ ] Update the video tutorial link once the YT video is complete  
 
 
 ## Reference Links:
@@ -35,3 +36,6 @@ Link - https://youtu.be/7zls5w3Ar1U
 ### Main Work From Home Tech Website
 
 https://workfromhometech.io
+
+![GitHub last commit](https://img.shields.io/github/last-commit/Work-From-Home-Tech/ollama-deploy)
+
