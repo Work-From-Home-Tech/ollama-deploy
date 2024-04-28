@@ -1,0 +1,53 @@
+---
+- name: "Start Playbook: Install Docker-ce"
+  hosts: all
+  gather_facts: false
+  vars:
+    prereqs:
+      - ca-certificates
+      - htop
+      - tmux
+    dockerpackages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+  become: true
+
+  tasks:
+    - name: Get Linux Version Codename
+      shell: lsb_release -cs
+      register: VERSION_CODENAME
+    - name: Register OS Architecture
+      shell: dpkg --print-architecture
+      register: ARCH
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Get Docker Keyring 
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: a+r
+    - name: Update the apt cache and all packages
+      apt:
+        update_cache: 'yes'
+        upgrade: 'yes'
+        cache_valid_time: 86400 # Once day between updates 
+    - name: Create Docker APT source list
+      copy:
+        dest: "/etc/apt/sources.list.d/docker.list"
+        content: |
+          deb [arch={{ ARCH.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ VERSION_CODENAME.stdout }} stable
+    - name: Install pre-requisites
+      apt: pkg={{ prereqs }} state=present update_cache=true
+    - name: Install Docker Packages
+      apt: pkg={{ dockerpackages }} state=present update_cache=true
+    - name: Add ubuntu user to the docker group
+      user:
+        name: ubuntu
+        append: true
+        groups: docker
+

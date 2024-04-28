@@ -1,0 +1,100 @@
+---
+- name: "Start Playbook: Install llama3 Install"
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: See if ollama is installed
+      stat:
+        path: /usr/local/bin/ollama
+      register: ollama_installed
+    - name: Get the Ollama install scripts
+      get_url:
+        url: https://ollama.com/install.sh
+        dest: /tmp/ollama-install.sh
+        mode: a+x
+    - name: Install Ollama
+      shell: /tmp/ollama-install.sh
+      when: ollama_installed.stat.exists == False
+    - name: Create the ollama server
+      copy:
+        dest: /etc/systemd/system/ollama.service
+        owner: root
+        group: root
+        content: |
+          [Unit]
+          Description=Ollama Service
+          After=network-online.target
+
+          [Service]
+          Environment="OLLAMA_HOST=0.0.0.0" 
+          ExecStart=/usr/local/bin/ollama serve
+          User=ollama
+          Group=ollama
+          Restart=always
+          RestartSec=3
+
+          [Install]
+          WantedBy=default.target
+      when: ollama_installed.stat.exists == False
+    - name: Enable ollama3 Systemd services
+      systemd:
+        daemon_reload: 'yes'
+        name: ollama
+        state: started
+        enabled: 'yes'
+    - name: Pull the ollama3 model
+      shell: ollama pull llama3
+    - name: Pull the deepseek-coder:base model
+      shell: ollama pull deepseek-coder:base
+    - name: Create Crewai model file
+      copy:
+        dest: /tmp/crewai-llama3
+        owner: root
+        group: root
+        content: |
+          FROM llama3
+
+          # Set parameters
+
+          PARAMETER temperature 0.8
+          PARAMETER stop Result
+
+          # Sets a custom message for the behavior of the assistant
+
+          SYSTEM """"""
+    - name: Create the new model file
+      shell: ollama create crewai-llama3 -f /tmp/crewai-llama3
+    - name: Create Open-WebUI stack directory
+      file:
+        path: /opt/stacks/open-webui
+        owner: ubuntu
+        group: docker
+        state: directory
+    - name: Install the Open-WebUI container
+      copy:
+        dest: /opt/stacks/open-webui/docker-compose.yaml
+        owner: ubuntu
+        group: docker
+        content: |
+          version: "3.3"
+          services:
+            open-webui:
+              ports:
+                - 4000:8080
+              extra_hosts:
+                - host.docker.internal:host-gateway
+              volumes:
+                - open-webui:/app/backend/data
+              container_name: open-webui
+              restart: always
+              image: ghcr.io/open-webui/open-webui:main
+          volumes:
+            open-webui: {}
+          networks: {}
+    - name: Start Open-webUI with docker compose
+      shell: "docker compose -f /opt/stacks/open-webui/docker-compose.yaml up -d"
+    - name: Final restart of ollama service to ensure the HOSTPORT is set
+      shell: "systemctl restart ollama.service"
+      

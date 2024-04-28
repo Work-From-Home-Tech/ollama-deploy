@@ -1,0 +1,47 @@
+---
+- name: "Update APT packages"
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    # =========================
+    # Upate the APT packages
+    # ==========================
+    #
+    - name: Get OS Release
+      shell: lsb_release -cs
+      register: RELEASE
+    - name: Set Timezone
+      shell: timedatectl set-timezone America/New_York
+    - name: Install htop
+      apt: pkg=htop state=present update_cache=true      
+    - name: Install tmux
+      apt: pkg=tmux state=present update_cache=true
+    - name: Install curl
+      apt: pkg=curl state=present update_cache=true
+    - name: Install git
+      apt: pkg=git-core state=present update_cache=true      
+    - name: Install neofetch
+      apt: pkg=neofetch state=present update_cache=true
+    - name: Upgrade server
+      apt:
+        upgrade: 'yes'
+        update_cache: 'yes'
+        cache_valid_time: 86400 # Once day between updates
+    - name: Install Figlet
+      apt: pkg=figlet state=present update_cache=true
+    - name: Install Toilet
+      apt: pkg=toilet state=present update_cache=true
+    - name: Add local DNS servers
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^#DNS='
+        line: DNS=192.168.1.92 192.168.1.111 192.168.1.222
+    - name: Restart the DNS server
+      ansible.builtin.systemd:
+        name: systemd-resolved.service
+        state: restarted
+
+  handlers:
+

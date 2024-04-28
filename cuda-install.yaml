@@ -1,0 +1,20 @@
+---
+- name: "Install CUDA 12.4"
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: "Download CUDA Kit"
+      get_url:
+        url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+        dest: /tmp/cuda-keyring_1.1-1_all.deb
+    - name: "Install the NVIDIA CUDA Keyring"
+      shell: "dpkg -i /tmp/cuda-keyring_1.1-1_all.deb"
+    - name: "Upgrade server"
+      apt:
+        upgrade: 'yes'
+        update_cache: 'yes'
+        cache_valid_time: 86400 # Once day between updates
+    - name: "Install cuda-toolkit-12-4 package"
+      apt: pkg=cuda-toolkit-12-4 state=present update_cache=true

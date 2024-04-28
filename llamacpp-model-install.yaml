@@ -1,0 +1,25 @@
+---
+- name: "Start Playbook: Get LocalAI Models"
+  hosts: all
+  gather_facts: true
+  become: true
+
+  tasks:
+  - name: Download Mistral Model
+    ansible.builtin.get_url:
+      url: https://huggingface.co/TheBloke/Mistral-7B-OpenOrca-GGUF/resolve/main/mistral-7b-openorca.Q6_K.gguf
+      dest: /tmp/LocalAI/models/mistral-7b-openorca.Q6_K.gguf
+  - name: Copy Mistral Model Config
+    ansible.builtin.copy:
+      src: /tmp/LocalAI/examples/configurations/mistral/
+      dest: /tmp/LocalAI/models/
+      remote_src: true
+  - name: Download Mixtral Model
+    ansible.builtin.get_url:
+      url: https://huggingface.co/TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF/resolve/main/mixtral-8x7b-instruct-v0.1.Q2_K.gguf
+      dest: /tmp/LocalAI/models/mixtral-8x7b-instruct-v0.1.Q2_K.gguf
+  - name: Copy Mixtral Model Config
+    ansible.builtin.copy:
+      src: /tmp/LocalAI/examples/configurations/mixtral/
+      dest: /tmp/LocalAI/models/
+      remote_src: true
