@@ -82,7 +82,7 @@
         BUILD_GRPC_FOR_BACKEND_LLAMA: ON
         # BUILD_TYPE: openblas
         GO_TAGS: "stablediffusion tts"
-        BUILD_TYPE: clblas
+        #BUILD_TYPE: clblas
         # GPU_TARGETS: gfx1030
         # CGO_CFLAGS: "-I/usr/include/opencv4"
         # CGO_CXXFLAGS: "-I/usr/include/opencv4"

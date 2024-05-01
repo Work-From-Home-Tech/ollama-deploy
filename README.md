@@ -1,4 +1,4 @@
-# WFHT Ollama Delployment Repo
+# WFHT Ollama Delployment Repo for (Ubuntu 22.04)
 
 Working with new AI technology requires the ability to experiment and prototype, which requires repeatable deployments. This repo helps with the setup of llama, models and Open-webUI through the use of Ansible scripts. 
 
@@ -48,4 +48,6 @@ Link - https://youtu.be/7zls5w3Ar1U
 https://workfromhometech.io
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Work-From-Home-Tech/ollama-deploy)
+
+Netboot.xyz https://boot.netboot.xyz/ipxe/netboot.xyz.img
 
