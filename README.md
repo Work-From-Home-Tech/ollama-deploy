@@ -4,8 +4,8 @@ Working with new AI technology requires the ability to experiment and prototype,
 
 ## Video Tutorial
 
-[![MaaS Tutorial](https://img.youtube.com/vi/m3d1rz0Nepk/maxresdefault.jpg)](https://www.youtube.com/embed/m3d1rz0Nepk)
-link: - https://www.youtube.com/watch?v=m3d1rz0Nepk
+[![Llama 3 Automated Deployment](https://img.youtube.com/vi/9pmi-b9U0FI/maxresdefault.jpg)](https://www.youtube.com/embed/9pmi-b9U0FI)
+link: - https://www.youtube.com/watch?v=9pmi-b9U0FI
 
 ## Files
 
@@ -17,7 +17,7 @@ link: - https://www.youtube.com/watch?v=m3d1rz0Nepk
 -  llamacpp-install.yaml - Install playbook that downloads and compiles llamacpp [Warning: Work In Progress!]
 -  llamacpp-model-install.yaml - Playbook to install models desired for llamacpp.
 -  nginx-proxy-install.yaml - Installs the nginx proxy manager if desired
--  ollama-install.yaml - Ollama install playbook that will provide a complete llama3 install with the latest llam3 3b model and Open-WebUI. Everything should be ready for use after it runs.
+-  ollama-install.yaml - Ollama install playbook that will provide a complete llama3 install with the latest llam3 8b model and Open-WebUI. Everything should be ready for use after it runs.
 -  README.md
 
 ## Future updates
@@ -49,5 +49,5 @@ https://workfromhometech.io
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Work-From-Home-Tech/ollama-deploy)
 
-Netboot.xyz https://boot.netboot.xyz/ipxe/netboot.xyz.img
+
 
