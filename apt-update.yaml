@@ -22,8 +22,6 @@
       apt: pkg=curl state=present update_cache=true
     - name: "Install git"
       apt: pkg=git-core state=present update_cache=true      
-    - name: "Install neofetch"
-      apt: pkg=neofetch state=present update_cache=true
     - name: "Upgrade server"
       apt:
         upgrade: 'yes'
